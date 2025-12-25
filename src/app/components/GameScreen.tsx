@@ -197,29 +197,45 @@ export function GameScreen({
             <div className="mb-3">
               <Slider
                 value={[bidAmount]}
-                onValueChange={handleBidChange}
+                onValueChange={currentPlayer?.isCurrentTurn ? handleBidChange : () => {}}
                 min={currentBid + 500}
                 max={playerMoney}
                 step={500}
                 className="mb-2"
+                disabled={!currentPlayer?.isCurrentTurn}
               />
               <div className="flex items-center justify-center gap-2">
                 <button
-                  onClick={() => addToBid(-500)}
-                  className="w-10 h-10 bg-sky-500 rounded-lg border-2 border-sky-700 flex items-center justify-center font-black text-white"
+                  onClick={() => currentPlayer?.isCurrentTurn && addToBid(-500)}
+                  disabled={!currentPlayer?.isCurrentTurn}
+                  className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center font-black text-white ${
+                    currentPlayer?.isCurrentTurn 
+                      ? 'bg-sky-500 border-sky-700 hover:bg-sky-600' 
+                      : 'bg-gray-300 border-gray-400 cursor-not-allowed opacity-50'
+                  }`}
                 >
                   -
                 </button>
                 <button
-                  onClick={() => addToBid(1000)}
-                  className="flex-1 h-10 bg-sky-500 rounded-lg border-2 border-sky-700 flex items-center justify-center font-black text-white text-sm"
+                  onClick={() => currentPlayer?.isCurrentTurn && addToBid(1000)}
+                  disabled={!currentPlayer?.isCurrentTurn}
+                  className={`flex-1 h-10 rounded-lg border-2 flex items-center justify-center font-black text-white text-sm ${
+                    currentPlayer?.isCurrentTurn 
+                      ? 'bg-sky-500 border-sky-700 hover:bg-sky-600' 
+                      : 'bg-gray-300 border-gray-400 cursor-not-allowed opacity-50'
+                  }`}
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   1,000
                 </button>
                 <button
-                  onClick={() => addToBid(2000)}
-                  className="flex-1 h-10 bg-sky-500 rounded-lg border-2 border-sky-700 flex items-center justify-center font-black text-white text-sm"
+                  onClick={() => currentPlayer?.isCurrentTurn && addToBid(2000)}
+                  disabled={!currentPlayer?.isCurrentTurn}
+                  className={`flex-1 h-10 rounded-lg border-2 flex items-center justify-center font-black text-white text-sm ${
+                    currentPlayer?.isCurrentTurn 
+                      ? 'bg-sky-500 border-sky-700 hover:bg-sky-600' 
+                      : 'bg-gray-300 border-gray-400 cursor-not-allowed opacity-50'
+                  }`}
                 >
                   <Plus className="w-4 h-4 mr-1" />
                   2,000
@@ -230,15 +246,24 @@ export function GameScreen({
             {/* Action Buttons */}
             <div className="space-y-2">
               <Button
-                onClick={() => onBid(bidAmount)}
-                className="w-full h-14 bg-green-500 hover:bg-green-600 rounded-2xl border-3 border-green-700 text-white font-black"
+                onClick={() => currentPlayer?.isCurrentTurn && onBid(bidAmount)}
+                disabled={!currentPlayer?.isCurrentTurn}
+                className={`w-full h-14 rounded-2xl border-3 text-white font-black ${
+                  currentPlayer?.isCurrentTurn 
+                    ? 'bg-green-500 hover:bg-green-600 border-green-700' 
+                    : 'bg-gray-300 border-gray-400 cursor-not-allowed opacity-50'
+                }`}
               >
                 BID
                 <div className="text-xs">({bidAmount.toLocaleString()} 입찰하기)</div>
               </Button>
               <Button
-                onClick={onPass}
-                className="w-full h-12 bg-red-500 hover:bg-red-600 rounded-2xl border-3 border-red-700 text-white font-black"
+                onClick={currentPlayer?.isCurrentTurn ? onPass : () => {}}
+                className={`w-full h-12 rounded-2xl border-3 text-white font-black ${
+                  currentPlayer?.isCurrentTurn 
+                    ? 'bg-red-500 hover:bg-red-600 border-red-700' 
+                    : 'bg-gray-300 border-gray-400 cursor-not-allowed opacity-50'
+                }`}
                 disabled={!currentPlayer?.isCurrentTurn}
               >
                 PASS
